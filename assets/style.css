@@ -78,12 +78,23 @@ form{
     align-items: center;
     gap: 20px;
 }
-.todo-list  .li-element .view .todo-text .check-btn{
+.todo-list  .li-element .view .todo-text .checkbtn{
     border: 1px solid;
     border-radius: 50%;
     width: 30px;
     height: 30px;
     color: #e6e6e6;
+    background-color: transparent;
+    position: relative;
+}
+.todo-list .li-element .view .todo-text .checkbtn .check-icon {
+    display: none;
+}
+.todo-list .li-element .view .todo-text .checkbtn .check-icon.open{
+    display: inline;
+    top: 5px;
+    right: 10px;
+    color: green;
 }
 .todo-list .li-element .view .delete-btn{
     color: #cc9a9a;
