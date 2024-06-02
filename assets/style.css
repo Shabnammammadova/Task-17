@@ -63,6 +63,9 @@ form{
 .todo-list{
     list-style-type: none;
 }
+.todo-list .li-element {
+    list-style-type: none;
+}
 .todo-list .li-element .view{
     display: flex;
     align-items: center;
