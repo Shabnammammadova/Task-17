@@ -47,7 +47,7 @@ checkBtn.addEventListener("click", (event) => {
     if (event.target.classList.contains("checkbtn")) {
         const checkIcon = event.target.querySelector(".check-icon");
         checkIcon.classList.toggle("open");
-       
+     
     }
 });
 
