@@ -51,7 +51,9 @@ checkBtn.addEventListener("click", (event) => {
     }
 });
 
-deleteBtn.addEventListener("click", ()=>{
-    liElement.remove()
-})
-
+todoList.addEventListener("click", (event) => {
+    if (event.target.classList.contains("delete-btn")) {
+        const listItem = event.target.closest(".li-element");
+        listItem.remove();
+    }
+});
