@@ -81,7 +81,6 @@ form{
     gap: 20px;
 }
 input[type="checkbox"] {
-    cursor: pointer; 
     appearance: none; 
     box-sizing: border-box;
     margin: 3px 3px 3px 4px;
@@ -107,9 +106,7 @@ input[type="checkbox"]:checked::before {
    text-align: center;
    color: green;
 }
-.label-element {
-    cursor: pointer;
-}
+
 
 .label-element::after {
     content: "";
@@ -126,18 +123,18 @@ input[type="checkbox"]:checked::before {
     display: none; 
     font-size: 25px;
     height: 30px;
-    margin: auto 0 11px;
     transition: color .2s ease-out;
     width: 30px;
     border: transparent;
     background-color: transparent;
+    position: absolute;
+    right: 5px;
 }
 .todo-list .li-element:hover .delete-btn {
-    display: inline; 
-    border: none;
+    display: inline-block;  
 }
 .todo-list .li-element .view .todo-text label{
-    font: 20px Helvetica,sans-serif;
+    font: 24px Helvetica,sans-serif;
 }
 .footer{
     display: flex;
