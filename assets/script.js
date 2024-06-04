@@ -5,7 +5,7 @@ const checkbox = document.querySelector('.toggle');
 const labelElement = document.querySelector('.label-element');
 const deleteBtn= document.querySelector(".delete-btn");
 const iconImg = document.querySelector(".iconimg");
-
+const liElements = document.querySelectorAll(".li-element");
 
 function inputSection(){
     if(todoinputElement.value.trim() !== "" ){
@@ -16,7 +16,7 @@ function inputSection(){
     <div class="view">
     <div class="todo-text">
     <input class="toggle" type="checkbox">
-    <label for="Checkbox" class="label-element">${todoinputElement.value}</label>
+    <label for="Checkboxelement" class="label-element">${todoinputElement.value}</label>
     </div>
     <button class="delete-btn">x</button>
     </div>   `
@@ -57,12 +57,18 @@ todoList.addEventListener("click", (event) => {
     }
 });
 
-// iconImg.addEventListener("click" ,()=>{
-//    if( liElement.classList.toggle("completed")){
-//         labelElement.classList.add("checked");
-//         labelElement.classList.remove("checked")
-//    }
 
+iconImg.addEventListener("click", () => {
     
-// })
-
+    const allChecked = Array.from(liElements).every(li => li.querySelector(".toggle").checked);
+    liElements.forEach(li => {
+        const checkbox = li.querySelector(".toggle");
+        const label = li.querySelector(".label-element");
+        checkbox.checked = !allChecked;
+        if (!allChecked) {
+            label.classList.add("checked");
+        } else {
+            label.classList.remove("checked");
+        }
+    });
+});

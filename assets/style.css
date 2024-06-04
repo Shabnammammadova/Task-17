@@ -54,10 +54,9 @@ form{
     content: "❯";
     font-size: 22px;
     padding: 10px 27px;
-    width: 60px;
-    height: 34px;
     position: absolute;
-    left:-35px;
+    top: 6px;
+    left:-2px;
     transform: rotate(90deg);
 }
 .todo-list{
@@ -172,11 +171,24 @@ input[type="checkbox"]:checked::before {
 }
 .footer .footer-ul a{
     font-family: Helvetica Neue,Arial, Helvetica, sans-serif ;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    color: inherit;
+    cursor: pointer;
+    margin: 3px;
+    padding: 3px 7px;
+    text-decoration: none;
+}
+.footer .footer-ul a.selected{
+    border-color: rgba(175, 47, 47, .2);
 }
 .footer .footer-ul a:hover{
     border: 1px solid;
     border-color: rgba(175, 47, 47, .2);
-}
+} 
+.li-active:hover {
+    border-color: rgba(175, 47, 47, .2)
+  }
 .footer-ul  a{
     border: 1px solid transparent;
     border-radius: 3px;
@@ -197,4 +209,7 @@ input[type="checkbox"]:checked::before {
 }
 .footer .clear-btn:hover{
   text-decoration: underline;
+}
+.active{
+    border-color: rgba(175, 47, 47, .2);
 }
