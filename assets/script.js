@@ -5,14 +5,12 @@ const checkbox = document.querySelector('.toggle');
 const labelElement = document.querySelector('.label-element');
 const deleteBtn= document.querySelector(".delete-btn");
 const iconImg = document.querySelector(".iconimg");
-const clearBtn = document.querySelector(".clear-btn")
-const completedBtn =document.querySelector(".completed-btn")
 const activeBtn = document.querySelectorAll(".li-active");
 const spanItemsElement = document.querySelector(".span-items");
 const allClick = document.getElementById("allclick");
 const activeClick = document.getElementById("activeclick");
 const completedClick = document.getElementById("completedclick");
-
+const clearBtn = document.querySelector(".clear-btn");
 
 alltaskLocaladded()
 
@@ -151,6 +149,7 @@ activeClick.addEventListener("click",()=>{
         else{
             li.style.display = "none"
         }
+    
     })
 })
 
@@ -165,3 +164,9 @@ completedClick.addEventListener("click", () => {
         }
     });
 });
+
+clearBtn.addEventListener("click",()=>{
+    const liElements = document.querySelectorAll(".li-element .toggle:checked");
+    liElements.forEach(task => task.closest(".li-element").remove());
+    saveTodo();
+})
