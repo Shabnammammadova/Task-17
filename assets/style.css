@@ -169,7 +169,7 @@ input[type="checkbox"]:checked::before {
     justify-content: space-between;
     position: relative;
 }
-.footer .footer-ul a{
+.footer .footer-ul li{
     font-family: Helvetica Neue,Arial, Helvetica, sans-serif ;
     border: 1px solid transparent;
     border-radius: 3px;
@@ -179,17 +179,17 @@ input[type="checkbox"]:checked::before {
     padding: 3px 7px;
     text-decoration: none;
 }
-.footer .footer-ul a.selected{
+.footer .footer-ul li.selected{
     border-color: rgba(175, 47, 47, .2);
 }
-.footer .footer-ul a:hover{
+.footer .footer-ul li:hover{
     border: 1px solid;
     border-color: rgba(175, 47, 47, .2);
 } 
 .li-active:hover {
     border-color: rgba(175, 47, 47, .2)
   }
-.footer-ul  a{
+.footer-ul  li{
     border: 1px solid transparent;
     border-radius: 3px;
     color: inherit;
@@ -211,5 +211,6 @@ input[type="checkbox"]:checked::before {
   text-decoration: underline;
 }
 .active{
-    border-color: rgba(175, 47, 47, .2);
+    border: 1px solid;
+    border-color: rgba(219, 11, 11, 0.2)!important;
 }

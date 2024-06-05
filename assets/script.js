@@ -5,7 +5,11 @@ const checkbox = document.querySelector('.toggle');
 const labelElement = document.querySelector('.label-element');
 const deleteBtn= document.querySelector(".delete-btn");
 const iconImg = document.querySelector(".iconimg");
-const liElements = document.querySelectorAll(".li-element");
+const footerLiElements = document.querySelectorAll('.li-active');
+const clearBtn = document.querySelector(".clear-btn")
+const completedBtn =document.querySelector(".completed-btn")
+
+alltaskLocaladded()
 
 function inputSection(){
     if(todoinputElement.value.trim() !== "" ){
@@ -22,7 +26,7 @@ function inputSection(){
     </div>   `
        ulElement.appendChild(liListItem);
        todoList.appendChild(ulElement);
-       
+       saveTodo()
       
     }
 }
@@ -36,7 +40,8 @@ todoinputElement.addEventListener("keydown", (event)=>{
 })
 
 function resetInput(){
-    todoinputElement.value = ""
+    todoinputElement.value = "";
+   
 }
 
 todoList.addEventListener("change", (event) => {
@@ -59,7 +64,7 @@ todoList.addEventListener("click", (event) => {
 
 
 iconImg.addEventListener("click", () => {
-    
+    const liElements = document.querySelectorAll(".li-element");
     const allChecked = Array.from(liElements).every(li => li.querySelector(".toggle").checked);
     liElements.forEach(li => {
         const checkbox = li.querySelector(".toggle");
@@ -70,5 +75,48 @@ iconImg.addEventListener("click", () => {
         } else {
             label.classList.remove("checked");
         }
+    });
+});
+
+// footerLiElements.forEach(li=>{
+//     li.addEventListener("click",()=>{
+//         footerLiElements.forEach(el => el.classList.remove('active'));
+//         li.classList.add('active');
+//     })
+// })
+
+clearBtn.addEventListener("click", ()=>{
+   const allCheckElement = document.querySelectorAll(".li-element .completed")
+   if(!allCheckElement){
+    liElement.remove()
+   }
+})
+
+
+function saveTodo(){
+   let todo = [];
+   todoList.querySelectorAll("li").forEach(function(item){
+   todo.push(item.textContent.trim())
+   });
+   localStorage.setItem("todo",JSON.stringify(todo))
+}
+
+function alltaskLocaladded(){
+    const todo = JSON.parse(localStorage.getItem('todo')) || [];
+    todo.forEach(inputSection)
+}
+
+
+const activeBtn = document.querySelectorAll(".li-active");
+
+activeBtn.forEach(btn => {
+    btn.addEventListener("click", function(event) {
+        const active = document.querySelector(".active");
+        if (active) {
+            active.classList.remove("active");
+            // active.style.borderColor = "rgba(219, 11, 11, 0.2)"
+        }
+        this.classList.add("active");
+       event.preventDefault()
     });
 });
