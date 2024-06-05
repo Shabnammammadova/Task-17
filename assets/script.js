@@ -5,9 +5,14 @@ const checkbox = document.querySelector('.toggle');
 const labelElement = document.querySelector('.label-element');
 const deleteBtn= document.querySelector(".delete-btn");
 const iconImg = document.querySelector(".iconimg");
-const footerLiElements = document.querySelectorAll('.li-active');
 const clearBtn = document.querySelector(".clear-btn")
 const completedBtn =document.querySelector(".completed-btn")
+const activeBtn = document.querySelectorAll(".li-active");
+const spanItemsElement = document.querySelector(".span-items");
+const allClick = document.getElementById("allclick");
+const activeClick = document.getElementById("activeclick");
+const completedClick = document.getElementById("completedclick");
+
 
 alltaskLocaladded()
 
@@ -26,7 +31,7 @@ function inputSection(){
     </div>   `
        ulElement.appendChild(liListItem);
        todoList.appendChild(ulElement);
-       saveTodo()
+
       
     }
 }
@@ -35,7 +40,8 @@ todoinputElement.addEventListener("keydown", (event)=>{
     if(event.key === "Enter"){
         event.preventDefault()
         inputSection();
-        resetInput()
+        saveTodo();
+        resetInput();
     }
 })
 
@@ -52,6 +58,7 @@ todoList.addEventListener("change", (event) => {
         } else {
             labelElement.classList.remove("checked");
         }
+        saveTodo()
     }
 });
 
@@ -76,29 +83,23 @@ iconImg.addEventListener("click", () => {
             label.classList.remove("checked");
         }
     });
+    saveTodo()
 });
-
-// footerLiElements.forEach(li=>{
-//     li.addEventListener("click",()=>{
-//         footerLiElements.forEach(el => el.classList.remove('active'));
-//         li.classList.add('active');
-//     })
-// })
 
 clearBtn.addEventListener("click", ()=>{
    const allCheckElement = document.querySelectorAll(".li-element .completed")
    if(!allCheckElement){
     liElement.remove()
    }
+   saveTodo();
 })
 
-
 function saveTodo(){
-   let todo = [];
+   let todos = [];
    todoList.querySelectorAll("li").forEach(function(item){
-   todo.push(item.textContent.trim())
+   todos.push(item.textContent.trim())
    });
-   localStorage.setItem("todo",JSON.stringify(todo))
+   localStorage.setItem("todo",JSON.stringify(todos))
 }
 
 function alltaskLocaladded(){
@@ -106,17 +107,61 @@ function alltaskLocaladded(){
     todo.forEach(inputSection)
 }
 
-
-const activeBtn = document.querySelectorAll(".li-active");
-
+function deleteTodo(){
+    saveTodo();
+}
 activeBtn.forEach(btn => {
     btn.addEventListener("click", function(event) {
         const active = document.querySelector(".active");
         if (active) {
             active.classList.remove("active");
-            // active.style.borderColor = "rgba(219, 11, 11, 0.2)"
         }
         this.classList.add("active");
        event.preventDefault()
+    });
+});
+
+function spanItem(){
+    if(todoinputElement.value != ""){
+        const count =  parseInt(spanItemsElement.textContent);
+       
+        spanItemsElement.textContent = count
+    }
+}
+
+allClick.addEventListener("click",()=>{
+    const liElements = document.querySelectorAll(".li-element");
+    liElements.forEach(li=>{
+       li.style.display = "block"
+        
+    })
+})
+
+activeClick.addEventListener("click",()=>{
+    const liElements = document.querySelectorAll(".li-element");
+    liElements.forEach(li=>{
+        const checkbox = li.querySelector(".toggle");
+        const label = li.querySelector(".label-element");
+        if (label.classList.contains("completed")) {
+            li.style.display = "block";
+        } 
+        else if(!checkbox.checked){
+            li.style.display = "block";
+        }
+        else{
+            li.style.display = "none"
+        }
+    })
+})
+
+completedClick.addEventListener("click", () => {
+    const liElements = document.querySelectorAll(".li-element");
+    liElements.forEach(li => {
+        const checkbox = li.querySelector(".toggle");
+        if (checkbox.checked) {
+            li.style.display = "block";
+        } else {
+            li.style.display = "none";
+        }
     });
 });
