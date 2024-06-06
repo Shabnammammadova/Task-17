@@ -217,3 +217,10 @@ input[type="checkbox"]:checked::before {
     border: 1px solid;
     border-color: rgba(219, 11, 11, 0.2)!important;
 }
+.footer-end{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    color:  #9f9c9c;
+    text-align: center;
+    margin: 65px auto 0;
+}

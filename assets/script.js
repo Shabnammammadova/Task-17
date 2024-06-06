@@ -8,7 +8,9 @@ const activeClick = document.getElementById("activeclick");
 const completedClick = document.getElementById("completedclick");
 const clearBtn = document.querySelector(".clear-btn");
 
+
 alltaskLocaladded();
+
 
 function inputSection(todoText) {
     const liListItem = document.createElement("li");
@@ -116,6 +118,7 @@ activeBtn.forEach(btn => {
         this.classList.add("active");
         event.preventDefault();
     });
+    saveTodo()
 });
 
 allClick.addEventListener("click", () => {
@@ -123,7 +126,9 @@ allClick.addEventListener("click", () => {
     liElements.forEach(li => {
         li.style.display = "block";
     });
-    updatespanCount()
+    saveTodo();
+    updatespanCount();
+  
 });
 
 activeClick.addEventListener("click", () => {
@@ -135,8 +140,10 @@ activeClick.addEventListener("click", () => {
         } else {
             li.style.display = "none";
         }
+        saveTodo()
     });
-    updatespanCount()
+    updatespanCount();
+    
 });
 
 completedClick.addEventListener("click", () => {
@@ -145,9 +152,15 @@ completedClick.addEventListener("click", () => {
         const checkbox = li.querySelector(".toggle");
         if (checkbox.checked) {
             li.style.display = "block";
+            li.style.textDecoration = "none"
+          
         } else {
             li.style.display = "none";
+            
         }
+        
     });
-    updatespanCount()
+    saveTodo()
+    updatespanCount();
+    
 });
