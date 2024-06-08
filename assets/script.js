@@ -1,5 +1,4 @@
 const todoinputElement = document.querySelector(".new-todo");
-const todoCreateForm = document.getElementById("todo-create-form");
 const todoList = document.querySelector(".todo-list");
 const iconImg = document.querySelector(".iconimg");
 const activeBtn = document.querySelectorAll(".li-active");
@@ -9,129 +8,155 @@ const activeClick = document.getElementById("activeclick");
 const completedClick = document.getElementById("completedclick");
 const clearBtn = document.querySelector(".clear-btn");
 
-const uid = new ShortUniqueId({ length: 10 });
+alltaskLocaladded();
 
-const STATUS = {
-  COMPLETED: 1,
-  ACTIVE: 0,
-};
-
-const defaultTodos = [
-  { id: uid.rnd(), title: "Learn JavaScript", status: STATUS.ACTIVE },
-  { id: uid.rnd(), title: "Learn React", status: STATUS.COMPLETED },
-  { id: uid.rnd(), title: "Have a life!", status: STATUS.ACTIVE },
-];
-
-function fillTodosFromLocalStorage() {
-  let todos = getTodosFromLocalStorage();
-  if (!todos) {
-    setTodosToLocalStorage(defaultTodos);
-    todos = defaultTodos;
-  }
-
-  todos.forEach(createToDoElement);
-  countItems();
-}
-
-function createToDoElement(todo) {
-  const liElement = document.createElement("li");
-  liElement.className = `li-element completed`;
-  if (todo.status === STATUS.COMPLETED) {
-    liElement.classList.add("checked");
-  }
-  liElement.innerHTML = `
+function inputSection(todoText) {
+  const liListItem = document.createElement("li");
+  liListItem.classList.add("li-element");
+  liListItem.innerHTML = `
         <div class="view">
             <div class="todo-text">
                 <input class="toggle" type="checkbox">
-                <label for="Checkboxelement" class="label-element ">${todo.title}</label>
+                <label for="Checkboxelement" class="label-element">${todoText}</label>
             </div>
             <button class="delete-btn">x</button>
-        </div>
-    `;
-  const checkboxInputElement = liElement.querySelector("input");
-  checkboxInputElement.checked = todo.status === STATUS.COMPLETED;
-  checkboxInputElement.addEventListener("change", () => {
-    const todos = getTodosFromLocalStorage();
-    const checked = checkboxInputElement.checked;
-    const changedTodo = todos.find((item) => item.id === todo.id);
-    changedTodo.status = checked ? STATUS.COMPLETED : STATUS.ACTIVE;
-    setTodosToLocalStorage(todos);
-
-    liElement.classList.toggle("checked");
-    countItems();
-  });
-
-  liElement.querySelector("button").addEventListener("click", () => {
-    const todos = getTodosFromLocalStorage();
-    const filteredTodos = todos.filter((item) => item.id !== todo.id);
-    setTodosToLocalStorage(filteredTodos);
-    liElement.remove();
-    countItems();
-  });
-
-  todoList.append(liElement);
+        </div>`;
+  todoList.appendChild(liListItem);
+  updatespanCount();
 }
 
-todoCreateForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const title = todoinputElement.value.trim();
-  if (!title) return;
-  const newTodo = {
-    id: uid.rnd(),
-    title,
-    status: STATUS.ACTIVE,
-  };
-  const todos = getTodosFromLocalStorage();
-  todos.push(newTodo);
-  setTodosToLocalStorage(todos);
-  createToDoElement(newTodo);
-  todoinputElement.value = "";
+todoinputElement.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    if (todoinputElement.value.trim() !== "") {
+      inputSection(todoinputElement.value.trim());
+      saveTodo();
+      resetInput();
+    }
+  }
 });
 
-function countItems() {
-  const todos = getTodosFromLocalStorage();
-  const count = todos.filter((todo) => todo.status === STATUS.ACTIVE).length;
-  spanItemsElement.textContent = count;
+function resetInput() {
+  todoinputElement.value = "";
 }
 
-allClick.addEventListener("click", () => {
-  console.log(todoList.children);
-  Array.from(todoList.children).forEach(
-    (item) => (item.style.display = "list-item")
+todoList.addEventListener("change", (event) => {
+  if (event.target.classList.contains("toggle")) {
+    const labelElement = event.target.nextElementSibling;
+    if (event.target.checked) {
+      labelElement.classList.add("checked");
+    } else {
+      labelElement.classList.remove("checked");
+    }
+    saveTodo();
+    updatespanCount();
+  }
+});
+
+todoList.addEventListener("click", (event) => {
+  if (event.target.classList.contains("delete-btn")) {
+    const listItem = event.target.closest(".li-element");
+    listItem.remove();
+    updatespanCount();
+    saveTodo();
+  }
+});
+
+iconImg.addEventListener("click", () => {
+  const liElements = document.querySelectorAll(".li-element");
+  const allChecked = Array.from(liElements).every(
+    (li) => li.querySelector(".toggle").checked
   );
-  activeClick.classList.remove("active");
-  allClick.classList.add("active");
-  completedClick.classList.remove("active");
+  liElements.forEach((li) => {
+    const checkbox = li.querySelector(".toggle");
+    const label = li.querySelector(".label-element");
+    checkbox.checked = !allChecked;
+    if (!allChecked) {
+      label.classList.add("checked");
+    } else {
+      label.classList.remove("checked");
+    }
+  });
+  saveTodo();
+  updatespanCount();
+});
+
+clearBtn.addEventListener("click", () => {
+  const liElements = document.querySelectorAll(".li-element .toggle:checked");
+  liElements.forEach((task) => task.closest(".li-element").remove());
+  updatespanCount();
+  saveTodo();
+});
+
+function saveTodo() {
+  let todos = [];
+  todoList.querySelectorAll(".li-element").forEach(function (item) {
+    const taskText = item.querySelector(".label-element").textContent.trim();
+    todos.push(taskText);
+  });
+  localStorage.setItem("todo", JSON.stringify(todos));
+}
+
+function alltaskLocaladded() {
+  const todos = JSON.parse(localStorage.getItem("todo")) || [];
+  todos.forEach((taskText) => inputSection(taskText));
+}
+
+function updatespanCount() {
+  const totalTodo = todoList.querySelectorAll(".li-element").length;
+  const completedTodo = todoList.querySelectorAll(
+    ".li-element .toggle:checked"
+  ).length;
+  const allTodo = totalTodo - completedTodo;
+  spanItemsElement.textContent = allTodo;
+}
+
+activeBtn.forEach((btn) => {
+  btn.addEventListener("click", function (event) {
+    const active = document.querySelector(".active");
+    if (active) {
+      active.classList.remove("active");
+    }
+    this.classList.add("active");
+    event.preventDefault();
+  });
+  saveTodo();
+});
+
+allClick.addEventListener("click", () => {
+  const liElements = document.querySelectorAll(".li-element");
+  liElements.forEach((li) => {
+    li.style.display = "block";
+  });
+  saveTodo();
+  updatespanCount();
 });
 
 activeClick.addEventListener("click", () => {
-  Array.from(todoList.children).forEach((item) => {
-    item.style.display = !item.classList.contains("checked")
-      ? "list-item"
-      : "none";
+  const liElements = document.querySelectorAll(".li-element");
+  liElements.forEach((li) => {
+    const checkbox = li.querySelector(".toggle");
+    if (!checkbox.checked) {
+      li.style.display = "block";
+    } else {
+      li.style.display = "none";
+    }
+    saveTodo();
   });
-  activeClick.classList.add("active");
-  allClick.classList.remove("active");
-  completedClick.classList.remove("active");
+  updatespanCount();
 });
 
 completedClick.addEventListener("click", () => {
-  Array.from(todoList.children).forEach((item) => {
-    item.style.display = item.classList.contains("checked")
-      ? "list-item"
-      : "none";
+  const liElements = document.querySelectorAll(".li-element");
+  liElements.forEach((li) => {
+    const checkbox = li.querySelector(".toggle");
+    if (checkbox.checked) {
+      li.style.display = "block";
+      li.style.textDecoration = "none";
+    } else {
+      li.style.display = "none";
+    }
   });
-  activeClick.classList.remove("active");
-  allClick.classList.remove("active");
-  completedClick.classList.add("active");
+  saveTodo();
+  updatespanCount();
 });
-
-function getTodosFromLocalStorage() {
-  return JSON.parse(localStorage.getItem("todos"));
-}
-
-function setTodosToLocalStorage(todos) {
-  localStorage.setItem("todos", JSON.stringify(todos));
-}
-
-fillTodosFromLocalStorage();
